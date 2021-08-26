@@ -45,24 +45,42 @@ public class Escalando {
                             prob=2+probabilidad_penalizacion.nextInt(2);
 
                             //dar las posiciones aleatorias en la fila, ls cuales seran las penalizaciones
-                            int posiciones[]= new int[(prob)];
+                            int posiciones[]= new int[prob];
+                            System.out.println("canti"+prob);
 
                             
                             //usamos un while para validar que hagan numeros repetidos
+                            Random posic = new Random();
                             int contador=0;
-                            while(contador<8){
-                            
-                            }
-                            
-                            
-                            for(int j=0;j<8;j++){
+                            while(contador<prob){
                                 
+                                int val=posic.nextInt(8);
+                                
+                                if(contador==0){
+                                    posiciones[contador]=val;
+                                    contador++;
+                                }else{
+                                    int contador2=0;                                    
+                                    while(contador2<contador){
+                                        if(val!=posiciones[contador2]){
+                                            contador2++;
+                                            if(contador2==contador){
+                                                posiciones[contador]=val;                                                
+                                            }                                            
+                                        }                                    
+                                    }
+                                    contador++;
+                                }
+                                System.out.println(val);
                             }
                             
-                        
-                        
+                            
+                            /*for(int j=0;j<4;j++){
+                                System.out.println(posiciones[j]);
+                            }*/
+                        System.out.println("lol");
+   
                         }
-                        
                         juego();
                     }else{
                         System.out.println("¡Hay una partida alamacenada!,¿Desea descartarla? Si(s),No(n)");

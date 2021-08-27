@@ -37,41 +37,49 @@ public class Escalando {
                 case 1:
                     if(partida==false){//validar si hay un juego guaradado con un if                         
                         
-                        for(int i=0;i<8;i++){
+                        for(int i=0;i<3;i++){
                             
                             //dar un numero aleatorio entre 2 y 4 aleatoria entre cada fila
                             int prob=0;
                             Random probabilidad_penalizacion= new Random();
-                            prob=2+probabilidad_penalizacion.nextInt(2);
-
-                            //dar las posiciones aleatorias en la fila, ls cuales seran las penalizaciones
-                            int posiciones[]= new int[prob];
+                            prob=2+probabilidad_penalizacion.nextInt(3);
+                            
                             System.out.println("canti"+prob);
 
+                            //dar las posiciones aleatorias en la fila, ls cuales seran las penalizaciones
+                            int posiciones[]= new int [prob];
                             
                             //usamos un while para validar que hagan numeros repetidos
                             Random posic = new Random();
                             int contador=0;
-                            while(contador<prob){
-                                
-                                int val=posic.nextInt(8);
-                                
+                            while(contador<prob){                                
+                                int val=posic.nextInt(8);//generamos un valor aleatorio entre 0 y 7                                
                                 if(contador==0){
-                                    posiciones[contador]=val;
+                                    posiciones[contador]=val;  
+                                    System.out.println(posiciones[contador]+"["+contador+"]");
                                     contador++;
                                 }else{
-                                    int contador2=0;                                    
-                                    while(contador2<contador){
-                                        if(val!=posiciones[contador2]){
-                                            contador2++;
-                                            if(contador2==contador){
-                                                posiciones[contador]=val;                                                
-                                            }                                            
+                                    int temp[]= new int[contador];
+                                    for(int j=0;j<contador;j++){
+                                        temp[j]=posiciones[j];                                        
+                                    }
+                                    
+                                    int tempCont=0;
+                                    for(int valBuscar:temp){
+                                        if(valBuscar==val){
+                                            tempCont++;                                            
                                         }                                    
                                     }
-                                    contador++;
+                                    
+                                    if(tempCont==0){
+                                        posiciones[contador]=val;
+                                        System.out.println(posiciones[contador]+"["+contador+"]");
+                                        contador++;                                        
+                                    }
+                                
                                 }
-                                System.out.println(val);
+                                
+                                                                
                             }
                             
                             
@@ -99,6 +107,7 @@ public class Escalando {
                     System.exit(0);                
             }                        
         }catch(Exception e){
+            System.out.println(e);
             System.out.println("¡opción ingresada invalida!\n");
             inicio();            
         }

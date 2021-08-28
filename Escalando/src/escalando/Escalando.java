@@ -10,6 +10,7 @@ public class Escalando {
     String valores[];//valores
     String matrix[][]= new String[8][8];
     int posicion =0;
+    int posicion_borrada=0;
     
     public Escalando(){
         inicio();
@@ -132,7 +133,7 @@ public class Escalando {
         String reglas[] = new String[8];
 
         for(int i=0;i<8;i++){
-        reglas[i]=new String();
+            reglas[i]=new String();
         }
 
         reglas[0]= "     1. El “@” indica tu posicion en el teclado.                    ";
@@ -226,14 +227,19 @@ public class Escalando {
     public void dado(){
         Random numer_alea = new Random();
         int receiver = 2+numer_alea.nextInt(5);
+        posicion_borrada =posicion;//*****************************
         posicion=posicion+receiver;
+        System.out.println("Salio: "+receiver+" puedes avanzar "+receiver+" posiiciones");
         
         double coscien= Double.valueOf(posicion)/8;
-        
-        int fila=4;
+        double coscien2= Double.valueOf(posicion_borrada)/8;
+        int fila=0;
         int columna=0;
+        int fila2=0;
+        int columna2=0;
         
         
+        //parte de posicion nueva
         if(coscien<=1){//<-
             if(posicion==8){
                 columna=0;
@@ -298,24 +304,104 @@ public class Escalando {
                 columna=(posicion%8)-1;
             }
             fila=0;
+        }// FIIIIINNNNN parte de posicion nueva
+        
+        //parte de posicion PREVVIIIIIIAAAA
+        if(coscien2<=1){//<-
+            if(posicion_borrada==8){
+                columna2=0;
+            }else{
+                if(posicion_borrada==0){
+                    columna2=0;
+                }else{
+                    columna2=8-(posicion_borrada%8);
+                }
+            }            
+            fila2=7;    
         }
+        if((coscien2<=2)&&(coscien2>1)){//->
+            if(posicion_borrada==16){
+                columna2=7;
+            }else{
+                columna2=(posicion_borrada%8)-1;
+            }
+            fila2=6;
+    
+        }
+        if((coscien2<=3)&&(coscien2>2)){//<-
+            if(posicion_borrada==24){
+                columna2=0;
+            }else{
+                columna2=8-(posicion_borrada%8);
+            }
+            fila2=5;
+        }
+        if((coscien2<=4)&&(coscien2>3)){//->
+            if(posicion_borrada==32){
+                columna2=7;
+            }else{
+                columna2=(posicion_borrada%8)-1;
+            }
+            fila2=4;
+        }
+        if((coscien2<=5)&&(coscien2>4)){//<-
+            if(posicion_borrada==40){
+                columna2=0;
+            }else{
+                columna2=8-(posicion_borrada%8);
+            }
+            fila2=3;
+        }
+        if((coscien2<=6)&&(coscien2>5)){//->
+            if(posicion_borrada==48){
+                columna2=7;
+            }else{
+                columna2=(posicion_borrada%8)-1;
+            }
+            fila2=2;
+        }
+        if((coscien2<=7)&&(coscien2>6)){//<-
+            if(posicion_borrada==56){
+                columna2=0;
+            }else{
+                columna2=8-(posicion_borrada%8);
+            }
+            fila2=1;
+        }
+        if((coscien2<=8)&&(coscien2>7)){//->
+            if(posicion_borrada==64){
+                columna2=7;
+            }else{
+                columna2=(posicion_borrada%8)-1;
+            }
+            fila2=0;
+        }// FIIIIINNNNN parte de posicion nueva
         
         //si esta vacia y no hay nada
         if(matrix[fila][columna].equals("      ")){            
-            System.out.println("jjj"+fila+""+columna+" pos"+posicion);
             matrix[fila][columna]="     @";
         }
         
         //si hay un penalizacion
         if(matrix[fila][columna].equals("#     ")){
-            System.out.println("jjj"+fila+""+columna+" pos"+posicion);
-            matrix[fila][columna]="#    @";        
+            matrix[fila][columna]="#/   @";        
         }
-        //si ya hay una posicion
-        if(matrix[fila][columna].equals("     @")){
-            System.out.println("jjj"+fila+""+columna+" pos"+posicion);
-            matrix[fila][columna]="#    @";        
+        
+        //espacion para limpiar la posicion borrada
+        
+        //si ya hay una posicion        
+            
+        if(matrix[fila2][columna2].equals("     @")){            
+            matrix[fila2][columna2]="      ";
         }
+
+        //si hay un penalizacion
+        if(matrix[fila2][columna2].equals("#/   @")){
+            matrix[fila2][columna2]="#/    ";        
+        }
+    
+
+            
         
         juego();
         

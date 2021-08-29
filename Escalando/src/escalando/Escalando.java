@@ -6,13 +6,17 @@ import java.util.Scanner;
  */
 public class Escalando {
     
-    boolean partida= false;//validador si hay partida guardada
-    String valores[];//valores
+    boolean partida= false;//validador si hay partida guardada    
     String matrix[][]= new String[8][8];
     int posicion =0;
     int posicion_borrada=0;
+    int vectorContadorPenalizaciones[]= new int[8];
     
     public Escalando(){
+        
+        for(int i=0;i<8;i++){
+                    vectorContadorPenalizaciones[i]=0;
+        }
         inicio();
     
     }
@@ -42,9 +46,8 @@ public class Escalando {
                         for(int i=0;i<8;i++){
                             for(int j=0;j<8;j++){
                                 matrix[i][j]=new String("      ");
-                            }
+                            }                            
                         }
-                        
                         
                         for(int i=0;i<8;i++){//por cada fila de la matriz                            
                             //dar un numero aleatorio entre 2 y 4 aleatoria entre cada fila
@@ -87,25 +90,106 @@ public class Escalando {
                             
                                
                         }
+                        partida=true;
                         juego();
+                        
                     }else{
                         System.out.println("¡Hay una partida alamacenada!,¿Desea descartarla? Si(s),No(n)");
-                        
-                        //codigo de descartar partida
+                        Scanner siNo= new Scanner(System.in);
+                        boolean valorSiNo=true;
+                        while(valorSiNo==true){
+                            String entre =siNo.next();
+                            if(entre.equalsIgnoreCase("s")){
+                                
+                                for(int i=0;i<8;i++){
+                                    for(int j=0;j<8;j++){
+                                        matrix[i][j]=new String("      ");
+                                    }                            
+                                }
+                                posicion=0;
+                                posicion_borrada=0;
+                                partida=false;
+                                for(int i=0;i<8;i++){
+                                    vectorContadorPenalizaciones[i]=0;
+                                }
+                                
+                                
+                                if(partida==false){//validar si hay un juego guaradado con un if                         
+                                //definir en memoria los espacios tipos string de la matriz
+                                for(int i=0;i<8;i++){
+                                    for(int j=0;j<8;j++){
+                                        matrix[i][j]=new String("      ");
+                                    }                            
+                                }
+
+
+
+                                for(int i=0;i<8;i++){//por cada fila de la matriz                            
+                                    //dar un numero aleatorio entre 2 y 4 aleatoria entre cada fila
+                                    int prob=0;
+                                    Random probabilidad_penalizacion= new Random();
+                                    prob=2+probabilidad_penalizacion.nextInt(3);
+
+                                    //dar las posiciones aleatorias en la fila, ls cuales seran las penalizaciones
+                                    int posiciones[]= new int [prob];
+
+                                    //usamos un while para validar que no hagan numeros repetidos
+                                    Random posic = new Random();
+                                    int contador=0;
+                                    while(contador<prob){                                
+                                        int val=posic.nextInt(8);//generamos un valor aleatorio entre 0 y 7                                
+                                        //llenamos espacios y validamos que no se repitan con un contador de psosiones y un foreach para revisar
+                                        if(contador==0){
+                                            posiciones[contador]=val;                                     
+                                            //lenamos la matriz con las posiciones                            
+                                             matrix[i][val]="#     ";                                    
+                                            contador++;
+                                        }else{
+                                            int temp[]= new int[contador];
+                                            for(int j=0;j<contador;j++){
+                                                temp[j]=posiciones[j];                                        
+                                            }                                    
+                                            int tempCont=0;//vector temporal para añadir y ver con una posicion menor de esqacio los que ya han sido añadidos no se repitan aleatorio generado
+                                            for(int valBuscar:temp){
+                                                if(valBuscar==val){
+                                                    tempCont++;                                            
+                                                }                                    
+                                            }                                    
+                                            if(tempCont==0){
+                                                posiciones[contador]=val;
+                                                matrix[i][val]="#     ";                                    
+                                                contador++;                                        
+                                            }                                
+                                        }                               
+                                    }
+
+
+                                }
+                                juego();
+                                partida=true;
+                                }
+                            }
+                            if(entre.equalsIgnoreCase("n")){
+                                System.out.println("¡Partida no descartada!\n");
+                                inicio();            
+                            }
+                        }
                     }                    
                     break;
                 case 2:
                     if(partida==true){//validar si hay un juego guardado tambiem
-
+                        juego();
+                        
                     }else{
-
+                        System.out.println("No hay partida Guardada");
+                        inicio();
                     };
                     break;
                 case 3:
                     System.exit(0);                
             }                        
         }catch(Exception e){
-            System.out.println(e);
+            
             System.out.println("¡opción ingresada invalida!\n");
             inicio();            
         }
@@ -120,30 +204,35 @@ public class Escalando {
             System.out.println("¡Que empieze el reto!\n");
             impresion(lol);
         }else{
-            lol="";
-            impresion(lol);
-        }
-        
+            if(posicion<65){
+                lol="";
+                impresion(lol);                
+            }else{
+                System.out.println("¡ha me ganaste!, na ya enserio, felicidades, lo has logrado:)");
+                inicio();                            
+            }            
+        }        
     }
     
     
     public void impresion(String lol2){        
-        System.out.print("---------------------------------------------------------");System.out.println("     ******************** Bienvenido a Escalando ********************");
-
+        System.out.print("---------------------------------------------------------");
+        System.out.println("    ************************** Bienvenido a Escalando ***************************");
+        
         String reglas[] = new String[8];
 
         for(int i=0;i<8;i++){
             reglas[i]=new String();
         }
 
-        reglas[0]= "     1. El “@” indica tu posicion en el teclado.                    ";
-        reglas[1]= "     2. Para avanzar, deberas lanzar un dado, conla letra 'd' o 'D' ";
-        reglas[2]= "     lanzas y avanzas las casillas que te indica el dado.           "; 
-        reglas[3]= "     3. si caes en una penalización, deberas resolver el reto       ";
-        reglas[4]= "     4. al final se veran tus reultados                             ";
-        reglas[5]= "     5. para pausar presiona 'p' o 'P'                              ";
-        reglas[6]= "     6. solo puede ser penalizado un maximo de 2 veces por fila :)  ";
-        reglas[7]= "     7. para salir del juego y descartarlo presiona 'x' o 'X'       ";
+        reglas[0]= "    |1. El “@” indica tu posicion en el teclado. 2. Para avanzar, deberas lanzar|";
+        reglas[1]= "    |un dado, con la letra 'd' o 'D' lanzas y avanzas las casillas que te inidca|";
+        reglas[2]= "    |el dado. 3. si caes en una penalización, deberas resolver el reto. 4. Al   |"; 
+        reglas[3]= "    |final se veran tus resultados. 5. para pausar presiona 'p' o 'P' 6. solo   |";
+        reglas[4]= "    |puede ser penalizado un maximo de 2 veces por fila :) 7. para salir del    |";
+        reglas[5]= "    |juego y descartarlo presiona 'x' o 'X'                                                        ";
+        reglas[6]= "                   ";
+        reglas[7]= "                        ";
 
         //dolor de cabeza pero salio visualmente con las psocionea de las filas 1 a 6
             for(int i=0;i<6;i++){
@@ -201,19 +290,54 @@ public class Escalando {
                 Scanner seguidor_de_juego = new Scanner(System.in);
                 String opcionseguida = seguidor_de_juego.next();            
                 switch(opcionseguida){
-                    case "d":validador_de_juego=true;
-                    dado();
+                    case "d":
+                        validador_de_juego=true;
+                        dado();
                     break;
-                    case "D":validador_de_juego=true;
-                    dado();
+                    case "D":
+                        validador_de_juego=true;
+                        dado();
                     break;
-                    case "p":validador_de_juego=true;
+                    
+                    case "p":
+                        validador_de_juego=true;
+                        inicio();
                     break;
-                    case "P":validador_de_juego=true;
+                    case "P":
+                        validador_de_juego=true;
+                        inicio();
                     break;
-                    case "x":validador_de_juego=true;inicio();
+                    
+                    case "x":
+                        validador_de_juego=true;
+                        for(int i=0;i<8;i++){
+                            for(int j=0;j<8;j++){
+                                matrix[i][j]=new String("      ");
+                            }                            
+                        }
+                        posicion=0;
+                        posicion_borrada=0;
+                        partida=false;
+                        for(int i=0;i<8;i++){
+                            vectorContadorPenalizaciones[i]=0;
+                        }
+                        inicio();
                     break;
-                    case "X":validador_de_juego=true;inicio();
+                    case "X":
+                        validador_de_juego=true;inicio();
+                        validador_de_juego=true;
+                        for(int i=0;i<8;i++){
+                            for(int j=0;j<8;j++){
+                                matrix[i][j]=new String("      ");
+                            }                            
+                        }
+                        posicion=0;
+                        posicion_borrada=0;
+                        partida=false;
+                        for(int i=0;i<8;i++){
+                            vectorContadorPenalizaciones[i]=0;
+                        }
+                        inicio();
                     break;
                     default:validador_de_juego=false;
                 }            
@@ -227,9 +351,11 @@ public class Escalando {
     public void dado(){
         Random numer_alea = new Random();
         int receiver = 2+numer_alea.nextInt(5);
-        posicion_borrada =posicion;//*****************************
+        posicion_borrada =posicion;
         posicion=posicion+receiver;
         System.out.println("Salio: "+receiver+" puedes avanzar "+receiver+" posiiciones");
+        
+        
         
         double coscien= Double.valueOf(posicion)/8;
         double coscien2= Double.valueOf(posicion_borrada)/8;
@@ -382,9 +508,18 @@ public class Escalando {
             matrix[fila][columna]="     @";
         }
         
-        //si hay un penalizacion
+        //si hay una penalizacion
         if(matrix[fila][columna].equals("#     ")){
-            matrix[fila][columna]="#/   @";        
+            
+            if(vectorContadorPenalizaciones[fila]<2){
+                vectorContadorPenalizaciones[fila]++;
+                matrix[fila][columna]="#/   @"; 
+                penalizacion(fila);
+            }else{
+                matrix[fila][columna]="     @";
+            }
+            
+            
         }
         
         //espacion para limpiar la posicion borrada
@@ -399,14 +534,23 @@ public class Escalando {
         if(matrix[fila2][columna2].equals("#/   @")){
             matrix[fila2][columna2]="#/    ";        
         }
-    
-
-            
-        
         juego();
         
     
     }
     
-    public void penalizacion(){}
+    public void penalizacion(int filaREsult){    
+        System.out.println("Has sisdo penalizado, que F, bueno resuelve este reto");
+        if((filaREsult==6)||(filaREsult==7)||(filaREsult==8)){
+        
+        }
+        if((filaREsult==3)||(filaREsult==4)||(filaREsult==5)){
+        
+        }
+        
+        if((filaREsult==1)||(filaREsult==2)){
+        
+        }
+    }
+    
 }

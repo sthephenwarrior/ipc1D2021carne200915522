@@ -13,7 +13,7 @@ public class Escalando {
     int vectorContadorPenalizaciones[]= new int[8];
     
     public Escalando(){
-        
+        //asiganado desde el inicio
         for(int i=0;i<8;i++){
                     vectorContadorPenalizaciones[i]=0;
         }
@@ -353,9 +353,7 @@ public class Escalando {
         int receiver = 2+numer_alea.nextInt(5);
         posicion_borrada =posicion;
         posicion=posicion+receiver;
-        System.out.println("Salio: "+receiver+" puedes avanzar "+receiver+" posiiciones");
-        
-        
+        System.out.println("Salio: "+receiver+", puedes avanzar "+receiver+" posiiciones");
         
         double coscien= Double.valueOf(posicion)/8;
         double coscien2= Double.valueOf(posicion_borrada)/8;
@@ -506,19 +504,24 @@ public class Escalando {
         //si esta vacia y no hay nada
         if(matrix[fila][columna].equals("      ")){            
             matrix[fila][columna]="     @";
+            
         }
         
         //si hay una penalizacion
-        if(matrix[fila][columna].equals("#     ")){
-            
-            if(vectorContadorPenalizaciones[fila]<2){
+        if(matrix[fila][columna].equals("#     ")){            
+            if(vectorContadorPenalizaciones[fila]<1){
                 vectorContadorPenalizaciones[fila]++;
                 matrix[fila][columna]="#/   @"; 
                 penalizacion(fila);
             }else{
-                matrix[fila][columna]="     @";
+                for(int k=0; k<8; k++){                
+                    if(matrix[fila][k].equals("#     ")){
+                        matrix[fila][k]="      ";
+                    }
+                }
+                matrix[fila][columna]="#/   @"; 
+                penalizacion(fila);
             }
-            
             
         }
         

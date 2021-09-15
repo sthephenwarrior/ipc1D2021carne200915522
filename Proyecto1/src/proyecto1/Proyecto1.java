@@ -23,10 +23,14 @@ import javax.swing.JTextField;
 public class Proyecto1 {
     
     //campos de clase
+    
+    // campos graficos
     private JFrame ventana;
     
     private String usuario="";
     private String contraseUsada="";
+    
+    private String usuarios[] = null;
     
     /**
      * Constructor base cuando el software se inicia sin parametros     
@@ -56,7 +60,8 @@ public class Proyecto1 {
         ventana.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         ventana.addWindowListener(new WindowAdapter(){
             public void windowClosing(WindowEvent e){
-                int valor = JOptionPane.showConfirmDialog(null,"¿Desea salir de la aplicacion?","¿Finalizar aplicación?", JOptionPane.YES_NO_OPTION);
+                int valor = JOptionPane.showConfirmDialog(null,"¿Desea salir de la aplicacion?",
+                        "¿Finalizar aplicación?", JOptionPane.YES_NO_OPTION);
                 if(valor==JOptionPane.YES_OPTION){                    
                     System.exit(0);                
                 }
@@ -102,12 +107,37 @@ public class Proyecto1 {
         entrarPrincipal.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e){
-                if(usuarioTexto.getText().isEmpty()){
-                    JOptionPane.showMessageDialog(null,"El campo Usuario sigue vacio, ingrese un usario","Informacion no valida",JOptionPane.WARNING_MESSAGE);
+                if(usuarioTexto.getText().isEmpty()||passwordTexto.getText().isEmpty()){
+                    JOptionPane.showMessageDialog(null,"El campo Usuario sigue vacio, ingrese un usario",
+                            "Informacion no valida",JOptionPane.WARNING_MESSAGE);
                 }else{
-                            
-                }
-            
+                    
+                    String tempusuario=usuarioTexto.getText();
+                    String tempContra=passwordTexto.getText();
+                    boolean verificadorDeAcceso=false;
+                    
+                    //validar si es admin
+                    if(tempusuario.equalsIgnoreCase("admin")){
+                        
+                        if(tempContra.equals("admin")){
+                            Admin objetoAdmin = new Admin();
+                        }
+                    
+                    
+                    }else{
+                        //buscar si hay usuarios
+                        if(usuarios==null){
+                            JOptionPane.showMessageDialog(null,"No hay vendedores registrados","Usuario no encontrador",JOptionPane.WARNING_MESSAGE);
+                        }else{
+                            //metodo buscador
+                            for(int i =0;i<usuarios.length;i++){
+                                if(usuario.equals(usuarios[i])){
+                        
+                                }
+                            }                        
+                        }
+                    }       
+                }            
             }
         
         });
